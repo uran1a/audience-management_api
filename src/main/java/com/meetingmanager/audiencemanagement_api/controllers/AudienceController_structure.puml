@@ -1,0 +1,148 @@
+@startuml
+
+package com.meetingmanager.audiencemanagement_api {
+
+  package controllers {
+    class AudienceController
+    class ScheduleController
+    class TypeController
+  }
+
+  package models {
+
+    package audience {
+      class Audience {
+        UUID id
+        int building
+        int floor
+        int room
+        int capacity
+        UUID type_id
+      }
+
+      class AudienceResponse {
+        UUID id
+        int building
+        int floor
+        int room
+        int capacity
+        String typeName
+      }
+
+      class CreateAudience {
+        int building
+        int floor
+        int room
+        int capacity
+        UUID type_id
+      }
+
+      class UpdateAudience {
+        int building
+        int floor
+        int room
+        int capacity
+        UUID type_id
+      }
+    }
+
+    package freeAudience {
+      class FreeAudienceRequest {
+        Date start_free_time
+        Date end_free_time
+      }
+
+      class FreeAudienceResponse {
+        UUID id
+        int building
+        int floor
+        int room
+        int capacity
+        String typeName
+      }
+    }
+
+    package schedule {
+      class CreateSchedule {
+        UUID audience_id
+        UUID meeting_id
+        Date start_time
+        Date end_time
+      }
+
+      class FreeTime {
+        Date start_time
+        Date end_time
+      }
+
+      class Schedule {
+        UUID id
+        UUID audience_id
+        UUID meeting_id
+        Date start_time
+        Date end_time
+      }
+
+      class ScheduleDTO {
+        UUID audience_id
+        UUID meeting_id
+        Date start_time
+        Date end_time
+      }
+    }
+
+    package scheduleGaps {
+      class Gap {
+        Date start_time
+        Date end_time
+      }
+
+      class ScheduleGapsRequest {
+        Date
+      }
+
+      class ScheduleGapsResponse {
+        List<Gap> gaps
+      }
+    }
+
+    package type {
+      class CreateType {
+        String name
+      }
+
+      class Type {
+        UUID id
+        String name
+      }
+    }
+  }
+
+  package repositories {
+    interface AudienceRepository
+    interface ScheduleRepository
+    interface TypeRepository
+  }
+
+  package services {
+    class AudienceService
+    class ScheduleService
+    class TypeService
+  }
+
+  class AudiencemanagementApiApplication
+}
+
+controllers.AudienceController --> services.AudienceService
+controllers.ScheduleController --> services.ScheduleService
+controllers.TypeController --> services.TypeService
+
+services.AudienceService --> repositories.AudienceRepository
+services.ScheduleService --> repositories.ScheduleRepository
+services.TypeService --> repositories.TypeRepository
+
+repositories.AudienceRepository --> models.audience.Audience
+repositories.ScheduleRepository --> models.schedule.Schedule
+repositories.TypeRepository --> models.type.Type
+
+@enduml
